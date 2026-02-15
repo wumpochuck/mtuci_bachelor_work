@@ -1,4 +1,4 @@
-from custom_functions import *
+from module_custom_funcs import *
 
 # Пример создания Word документа на рабочем столе
 def create_word_doc_on_desktop():
