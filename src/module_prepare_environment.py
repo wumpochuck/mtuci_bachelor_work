@@ -6,7 +6,6 @@ from module_logger import CSVLogger
 logger = CSVLogger()
 
 def set_resolution(width, height):
-    """Изменяет разрешение экрана"""
     print(f"Установка разрешения {width}x{height}...")
     logger.log("info", f"Установка разрешения {width}x{height}", "set_resolution")
     
@@ -32,7 +31,6 @@ def set_resolution(width, height):
         raise
 
 def set_scaling_100():
-    """Устанавливает масштаб 100% (96 DPI) через реестр"""
     print("Установка масштаба 100%...")
     logger.log("info", "Установка масштаба 100%", "set_scaling_100")
     
@@ -40,7 +38,7 @@ def set_scaling_100():
         registry_path = r"Control Panel\Desktop"
         key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, registry_path, 0, winreg.KEY_SET_VALUE)
         
-        winreg.SetValueEx(key, "LogPixels", 0, winreg.REG_DWORD, 96)
+        winreg.SetValueEx(key, "LogPixels", 0, winreg.REG_DWORD, 96) # 96 DPI = 100% масштаба
         winreg.CloseKey(key)
         
         win32api.SendMessage(win32con.HWND_BROADCAST, win32con.WM_SETTINGCHANGE, 0, "LogPixels")
@@ -52,11 +50,7 @@ def set_scaling_100():
         logger.log("error", f"Ошибка при смене масштаба: {e}", "set_scaling_100")
 
 if __name__ == "__main__":
-    logger.log("info", "Запуск подготовки окружения", "main")
+    logger.log("info", "Запуск подготовки винды", "main")
     
     set_scaling_100()
     set_resolution(1366, 768)
-    
-    print("\n[Готово] Хост приведен к эталонным параметрам.")
-    logger.log("info", "Хост приведен к эталонным параметрам", "main")
-    print("Примечание: Если масштаб не изменился визуально, может потребоваться выход из системы (Sign out).")

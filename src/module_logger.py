@@ -10,21 +10,16 @@ class CSVLogger:
         self.logger = logging.getLogger("UserSimulator")
         self.logger.setLevel(logging.DEBUG)
         
-        # Очистим обработчики, если они уже есть (чтобы избежать дублирования при перезапусках)
         if self.logger.hasHandlers():
             self.logger.handlers.clear()
         
         handler = logging.FileHandler(self.filename, encoding='utf-8')
         
-        # ИСПОРАВЛЕНИЕ: Мы используем %(asctime)s и задаем формат даты через datefmt.
-        # Миллисекунды добавим вручную через формат самой строки.
         formatter = logging.Formatter(
             fmt='%(asctime)s;%(levelname)s;%(message)s',
             datefmt='%Y-%m-%dT%H:%M:%S'
         )
         
-        # Чтобы добавить миллисекунды в стиле ISO 8601 (через точку), 
-        # переопределим формат миллисекунд:
         formatter.default_msec_format = '%s.%03d'
         
         handler.setFormatter(formatter)
@@ -36,7 +31,6 @@ class CSVLogger:
                 f.write("timestamp;level;message;context\n")
 
     def log(self, level, message, context="None"):
-        # Заменяем ';' в сообщении и контексте, чтобы не ломать CSV структуру
         clean_message = str(message).replace(';', ',')
         clean_context = str(context).replace(';', ',')
         
